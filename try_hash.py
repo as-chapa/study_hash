@@ -3,16 +3,20 @@ import time
 import sys
 
 ##CONSTANT
-SALT = b'secret'
 STR_COUNT = 10000
 
 org = sys.argv[1]
 
+def randomsalt():
+    import string, random
+    at = string.ascii_lowercase + string.ascii_uppercase
+    return ''.join([random.choice(at) for i in range(10)])
+
 def salthash(s):
-    return hashlib.sha256(SALT + s.encode('utf-8')).hexdigest()
+    return hashlib.sha256((randomsalt() + s).encode('utf-8')).hexdigest()
 
 def stretching(s):
-    for x in range(0, STR_COUNT):
+    for x in range(STR_COUNT):
         s = salthash(s)
     return s
 
